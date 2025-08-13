@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExcelMaster Pro - Interactive Excel Learning</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>ExcelMaster<span class="logo-accent">Pro</span></h1>
+            </div>
+            <div class="header-controls">
+                <div class="progress-indicator">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="overallProgress"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">0% Complete</span>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar">👤</div>
+                    <span>Student</span>
+                </div>
+                <button class="btn btn--sm btn--secondary" id="settingsBtn">⚙️</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>Quick Actions</h3>
+                    <button class="tool-btn" id="practiceBtn">
+                        <span class="tool-icon">💻</span>
+                        Practice Mode
+                    </button>
+                    <button class="tool-btn" id="aiHelperBtn">
+                        <span class="tool-icon">🤖</span>
+                        AI Helper
+                    </button>
+                    <button class="tool-btn" id="achievementsBtn">
+                        <span class="tool-icon">🏆</span>
+                        Achievements
+                    </button>
+                    <button class="tool-btn" id="chartsBtn">
+                        <span class="tool-icon">📊</span>
+                        Charts
+                    </button>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Sample Data</h3>
+                    <button class="data-btn" data-dataset="sales">📈 Sales Data</button>
+                    <button class="data-btn" data-dataset="employees">👥 Employee DB</button>
+                    <button class="data-btn" data-dataset="products">📦 Products</button>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Functions Reference</h3>
+                    <button class="tool-btn" id="functionsBtn">
+                        <span class="tool-icon">📚</span>
+                        Function Library
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Screen -->
+            <div class="welcome-screen" id="welcomeScreen">
+                <div class="welcome-content">
+                    <div class="welcome-hero">
+                        <h1>Master Excel Like a Pro</h1>
+                        <p>Interactive tutorials, real-time practice, and AI-powered learning</p>
+                        <div class="learning-stats">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalTopics">20</div>
+                                <div class="stat-label">Topics</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="completedTopics">0</div>
+                                <div class="stat-label">Completed</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="earnedBadges">0</div>
+                                <div class="stat-label">Badges</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Learning Path -->
+                    <div class="learning-path">
+                        <h2>Choose Your Learning Path</h2>
+                        <div class="level-selector">
+                            <button class="level-btn active" data-level="all">All Topics</button>
+                            <button class="level-btn" data-level="Beginner">Beginner</button>
+                            <button class="level-btn" data-level="Intermediate">Intermediate</button>
+                            <button class="level-btn" data-level="Advanced">Advanced</button>
+                        </div>
+                        <div class="topics-grid" id="topicsGrid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic Detail View -->
+            <div class="topic-detail-view hidden" id="topicDetailView">
+                <div class="topic-header">
+                    <button class="btn btn--secondary" id="backToTopicsBtn">← Back to Topics</button>
+                    <div class="topic-meta">
+                        <h2 id="topicTitle">Topic Title</h2>
+                        <div class="topic-info">
+                            <span class="difficulty-badge" id="topicDifficulty">Beginner</span>
+                            <span class="duration" id="topicDuration">30 min</span>
+                            <span class="exercises-count" id="topicExercises">5 exercises</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="topic-content">
+                    <div class="content-tabs">
+                        <button class="tab-btn active" data-tab="theory">📖 Theory</button>
+                        <button class="tab-btn" data-tab="practice">💻 Practice</button>
+                        <button class="tab-btn" data-tab="quiz">📝 Quiz</button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- Theory Tab -->
+                        <div class="tab-pane active" id="theoryPane">
+                            <div class="theory-content">
+                                <div class="lesson-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="lessonProgress"></div>
+                                    </div>
+                                    <span class="progress-text" id="lessonProgressText">Lesson 1 of 4</span>
+                                </div>
+                                <div class="lesson-content" id="lessonContent">
+                                    <h3 id="lessonTitle">Loading...</h3>
+                                    <div id="lessonText"></div>
+                                    <div class="lesson-navigation">
+                                        <button class="btn btn--secondary" id="prevLessonBtn" disabled>← Previous</button>
+                                        <button class="btn btn--primary" id="nextLessonBtn">Next →</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Practice Tab -->
+                        <div class="tab-pane hidden" id="practicePane">
+                            <div class="practice-layout">
+                                <div class="spreadsheet-area">
+                                    <div class="formula-bar">
+                                        <span class="formula-label">fx</span>
+                                        <input type="text" class="formula-input" id="formulaInput" placeholder="Enter formula...">
+                                        <button class="btn btn--sm btn--primary" id="executeFormulaBtn">Execute</button>
+                                    </div>
+                                    <div class="spreadsheet-container">
+                                        <table class="spreadsheet" id="spreadsheet">
+                                            <thead id="spreadsheetHeader"></thead>
+                                            <tbody id="spreadsheetBody"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="spreadsheet-controls">
+                                        <button class="btn btn--sm btn--secondary" id="undoBtn">↶ Undo</button>
+                                        <button class="btn btn--sm btn--secondary" id="redoBtn">↷ Redo</button>
+                                        <button class="btn btn--sm btn--secondary" id="clearBtn">🗑️ Clear</button>
+                                        <button class="btn btn--sm btn--primary" id="saveBtn">💾 Save</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="practice-guide">
+                                    <h3>Practice Exercises</h3>
+                                    <div class="exercises-list" id="exercisesList"></div>
+                                    <div class="practice-tips">
+                                        <h4>💡 Tips</h4>
+                                        <ul id="practiceTips"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quiz Tab -->
+                        <div class="tab-pane hidden" id="quizPane">
+                            <div class="quiz-container">
+                                <div class="quiz-header">
+                                    <h3>Knowledge Check</h3>
+                                    <div class="quiz-progress">
+                                        <span id="quizProgressText">Question 1 of 5</span>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="quizProgress"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="quiz-content" id="quizContent">
+                                    <div class="question" id="currentQuestion">
+                                        <h4 id="questionText">Loading question...</h4>
+                                        <div class="answers" id="answerOptions"></div>
+                                    </div>
+                                </div>
+                                <div class="quiz-actions">
+                                    <button class="btn btn--secondary" id="prevQuestionBtn" disabled>← Previous</button>
+                                    <button class="btn btn--primary" id="nextQuestionBtn">Next →</button>
+                                    <button class="btn btn--primary hidden" id="submitQuizBtn">Submit Quiz</button>
+                                </div>
+                                <div class="quiz-results hidden" id="quizResults">
+                                    <h3>Quiz Complete!</h3>
+                                    <div class="score-display">
+                                        <div class="score-circle">
+                                            <span class="score-percentage" id="quizScore">0%</span>
+                                        </div>
+                                        <div class="score-details">
+                                            <p id="scoreMessage">Great job!</p>
+                                            <button class="btn btn--primary" id="completeTopicBtn">Complete Topic</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- AI Helper Modal -->
+    <div class="modal hidden" id="aiHelperModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🤖 AI Excel Assistant</h3>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-message bot">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            Hello! I'm your Excel AI assistant. I can help you with formulas, functions, and best practices. What would you like to learn today?
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Ask me about Excel...">
+                    <button class="btn btn--primary" id="sendChatBtn">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div class="modal hidden" id="achievementsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🏆 Your Achievements</h3>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="achievements-grid" id="achievementsGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Modal -->
+    <div class="modal hidden" id="chartsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content charts-modal">
+            <div class="modal-header">
+                <h3>📊 Create Chart</h3>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="chart-controls">
+                    <div class="form-group">
+                        <label class="form-label">Chart Type:</label>
+                        <select class="form-control" id="chartType">
+                            <option value="bar">Bar Chart</option>
+                            <option value="line">Line Chart</option>
+                            <option value="pie">Pie Chart</option>
+                            <option value="scatter">Scatter Plot</option>
+                            <option value="doughnut">Doughnut Chart</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Data Range:</label>
+                        <input type="text" class="form-control" id="chartRange" placeholder="e.g., A1:B5">
+                    </div>
+                    <button class="btn btn--primary" id="createChartBtn">Create Chart</button>
+                </div>
+                <div class="chart-container" style="position: relative; height: 400px;">
+                    <canvas id="chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Functions Modal -->
+    <div class="modal hidden" id="functionsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📚 Excel Functions Reference</h3>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="functions-search">
+                    <input type="text" class="form-control" id="functionsSearch" placeholder="Search functions...">
+                </div>
+                <div class="functions-grid" id="functionsGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Practice Mode Modal -->
+    <div class="modal hidden" id="practiceModeModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content practice-modal">
+            <div class="modal-header">
+                <h3>💻 Excel Practice Mode</h3>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="practice-spreadsheet">
+                    <div class="formula-bar">
+                        <span class="formula-label">fx</span>
+                        <input type="text" class="formula-input" id="practiceFormulaInput" placeholder="Enter formula...">
+                        <button class="btn btn--sm btn--primary" id="executePracticeFormulaBtn">Execute</button>
+                    </div>
+                    <div class="spreadsheet-container">
+                        <table class="spreadsheet" id="practiceSpreadsheet">
+                            <thead id="practiceSpreadsheetHeader"></thead>
+                            <tbody id="practiceSpreadsheetBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="practice-toolbar">
+                        <button class="btn btn--sm btn--secondary" id="practiceUndoBtn">↶</button>
+                        <button class="btn btn--sm btn--secondary" id="practiceRedoBtn">↷</button>
+                        <button class="btn btn--sm btn--secondary" id="practiceClearBtn">Clear</button>
+                        <select class="form-control" id="practiceDataset">
+                            <option value="">Select Sample Data</option>
+                            <option value="sales">Sales Data</option>
+                            <option value="employees">Employee Data</option>
+                            <option value="products">Product Data</option>
+                        </select>
+                        <button class="btn btn--sm btn--primary" id="loadPracticeDataBtn">Load</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div class="notification hidden" id="notification">
+        <div class="notification-content">
+            <div class="notification-icon" id="notificationIcon">✅</div>
+            <div class="notification-text" id="notificationText"></div>
+        </div>
+        <button class="notification-close" id="notificationClose">×</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
